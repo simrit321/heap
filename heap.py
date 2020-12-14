@@ -47,8 +47,21 @@ class MinHeap:
     
     def insert(self, v):
         '''Insert v in self. Maintain heap property.'''
-        
-        pass
+        self._data.append(v)
+        index = self._data.index(v)
+        i = parent(index)
+        p = self._data[i]
+        while v < p:
+            a,b = self._data.index(v), self._data.index(p)
+            self._data[b], self._data[a] = self._data[a], self._data[b]
+            index = self._data.index(v)
+            i = parent(index)
+            p = self._data[i]
+            if index == 0:
+                break
+         
+
+
     
     
     def extract_min(self):
@@ -81,4 +94,8 @@ class MinHeap:
         # for each node in the first half of the list
         # percolate down
         pass
-    
+if __name__ == '__main__':
+    s = MinHeap(L=[0,1,5,7])
+    s.insert(2)
+    s.insert(4)
+    print(s)

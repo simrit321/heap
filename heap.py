@@ -48,7 +48,9 @@ class MinHeap:
     def insert(self, v):
         '''Insert v in self. Maintain heap property.'''
         self._data.append(v)
-
+        self._percolate_up()
+        
+        
         return self
  
     
@@ -60,32 +62,12 @@ class MinHeap:
             raise Exception("No values in min heap")
         else:
             ind = len(self._data) - 1
-            a, b = self._data[0], self._data[ind]
+            a, b = 0, ind
             self._data[b], self._data[a] = self._data[a], self._data[b]
-            m = self._data.pop(ind)
+            m=self._data.pop(len(self._data)-1)
+            self._percolate_down(0)
+        return
             
-            index = 0
-            il = left(index)
-            ir = right(index)
-            r = self._data[0]
-            l = self._data[il]
-            ri = self._data[ir]
-            
-            while r > l or r > ri:
-                
-                if l > ri:
-                    smaller = ri
-                elif l < ri:
-                    smaller = l
-                  
-                x,y = self._data.index(r), self._data.index(smaller)
-                self._data[y], self._data[x] = self._data[x], self._data[y]
-                index = self._data.index(r)
-                il = left(index)
-                ir = right(index)
-                l = self._data[il]
-                r = self._data[ir]
-            return self             
  
     
     def _percolate_up(self):
@@ -103,18 +85,44 @@ class MinHeap:
             p = self._data[i]
             if index == 0:
                 break
-        return self
+        return 
         
-    
-    
+        
     def _percolate_down(self, i):
         ''' Restore heap property of subtree 
         rooted at index i.
         '''
+        index = i 
+        il = left(index)
+        ir = right(index)
+        r = self._data[i]
+        l = self._data[il]
+        ri = self._data[ir]
         
+        while r > l or r > ri:
+            
+            if l > ri:
+                smaller = ri
+            elif l < ri:
+                smaller = l
+              
+            x,y = self._data.index(r), self._data.index(smaller)
+            self._data[y], self._data[x] = self._data[x], self._data[y]
+            index = self._data.index(r)
+            il = left(index)
+            ir = right(index)
+            if il > len(self._data)-1:
+                return
+            if ir > len(self._data)-1:
+                return
+            else:                     
+                l = self._data[il]
+                r = self._data[ir]
+        return self             
+    
         # while larger than at least one child
         # swap with smaller child and repeat    
-        pass
+        
     
     
     def _min_heapify(self):
@@ -124,9 +132,13 @@ class MinHeap:
         # percolate down
         pass
 if __name__ == '__main__':
-    s = MinHeap(L=[0,1,5,7])
+    s = MinHeap()
     s.insert(2)
     s.insert(4)
+    s.insert(5)
+    s.insert(10)
+    s.insert(1)
+    s.insert(3)
     print(s)
     s.extract_min()
     print(s)

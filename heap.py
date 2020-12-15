@@ -48,17 +48,7 @@ class MinHeap:
     def insert(self, v):
         '''Insert v in self. Maintain heap property.'''
         self._data.append(v)
-        index = self._data.index(v)
-        i = parent(index)
-        p = self._data[i]
-        while v < p:
-            a,b = self._data.index(v), self._data.index(p)
-            self._data[b], self._data[a] = self._data[a], self._data[b]
-            index = self._data.index(v)
-            i = parent(index)
-            p = self._data[i]
-            if index == 0:
-                break
+
         return self
  
     

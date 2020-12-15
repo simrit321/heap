@@ -95,51 +95,38 @@ class MinHeap:
         ''' Restore heap property of subtree 
         rooted at index i.
         '''
-        maxL = len(self._data)-1
-        index = i
+
+        index = i 
+        index_left = left(index)
+        index_right = right(index)
         node_val = self._data[i]
-        ind_left = left(index)
-        ind_right = right(index)
-
-        x = 0
-
-        while index != maxL:
-            if ind_left <= maxL:
-                x += 0.5
-            if ind_right <= maxL:
-                x += 1
-            else:
-                x +=0
-            if x == 1.5:
-                left_val = self._data[ind_left]
-                right_val = self._data[ind_right]
-                if left_val < node_val or right_val < node_val:
-                    if left_val < right_val:
-                        self.swap(n=node_val, s=left_val)
-                        index = self._data.index(node_val) 
-                    elif left_val > right_val:
-                        self.swap(n=node_val, s=right_val)
-                        index = self._data.index(node_val)
-
-            elif x == 0.5: 
-                left_val = self._data[ind_left]
-                if left_val < node_val:
-                    self.swap(n=node_val, s=left_val)
-                    index = self._data.index(node_val)
-            elif x == 1:
-                right_val = self._data[ind_right]
-                if right_val < node_val:
-                    self.swap(n=node_val, s=right_val)
-                    index = self._data.index(node_val)
+        
+        if index_left < len(self._data)-1:
+            left_val = self._data[index_left]
             
+        if index_right < len(self._data)-1:
+            right_val = self._data[index_right]         
             
-
-
-    def swap(self, n, s):
-        a,b = self._data.index(n), self._data.index(s)
-        self._data[b], self._data[a] = self._data[a], self._data[b]
-        return self._data      
-
+             
+        while node_val > left_val or node_val > right_val:
+            
+            if left_val > right_val:
+                smaller = right_val
+            elif left_val < right_val:
+                smaller = left_val
+              
+            x,y = self._data.index(node_val), self._data.index(smaller)
+            self._data[y], self._data[x] = self._data[x], self._data[y]
+            index = self._data.index(node_val)
+            index_left = left(index)
+            index_right = right(index)
+            
+            if index_left < len(self._data)-1:
+                left_val = self._data[index_left]
+                
+            if index_right < len(self._data)-1:
+                right_val = self._data[index_right]
+        
 
             
         # while larger than at least one child
@@ -177,6 +164,7 @@ if __name__ == '__main__':
     print(s)
     b = MinHeap(L=[33,2,1,3,4,6,7,11])
     print(b)
+    b.extract_min()
     b.extract_min()
     print(b)
 

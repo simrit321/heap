@@ -59,7 +59,7 @@ class MinHeap:
         Raise EmptyHeapException if heap is empty.'''
         
         if len(self._data) == 0:
-            raise Exception( 'empty' + EmptyHeapException)
+            raise EmptyHeapException()
         elif len(self._data) == 1:
             return self._data[0]  
         else:
@@ -158,6 +158,10 @@ class MinHeap:
             
         # for each node in the first half of the list
         # percolate down
+
+class EmptyHeapException(Exception):
+    pass
+
 if __name__ == '__main__':
     s = MinHeap()
     s.insert(2)

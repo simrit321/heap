@@ -59,14 +59,17 @@ class MinHeap:
         Raise EmptyHeapException if heap is empty.'''
         
         if len(self._data) == 0:
-            raise Exception("No values in min heap")
+            raise Exception( 'empty' + EmptyHeapException)
+        elif len(self._data) == 1:
+            return self._data[0]  
         else:
             ind = len(self._data) - 1
             a, b = 0, ind
             self._data[b], self._data[a] = self._data[a], self._data[b]
             m=self._data.pop(len(self._data)-1)
-            self._percolate_down(0)
-        return
+            self._percolate_down(i=0)
+        self._percolate_up()
+        return m
             
  
     
@@ -95,10 +98,15 @@ class MinHeap:
         index = i 
         il = left(index)
         ir = right(index)
-        r = self._data[i]
-        l = self._data[il]
-        ri = self._data[ir]
-        
+        if il > len(self._data)-1:
+            return
+        if ir > len(self._data)-1:
+            return
+        else:
+            r = self._data[i]
+            l = self._data[il]
+            ri = self._data[ir]
+            
         while r > l or r > ri:
             
             if l > ri:
@@ -128,9 +136,28 @@ class MinHeap:
     def _min_heapify(self):
         '''Turn unordered list into min-heap.'''
         
+        for item in self._data:
+            q = self._data.index(item)
+            l = left(q)
+            r = right(q)
+            p = parent(q)
+            if l > len(self._data)-1:
+                return
+            else:           
+                l_val = self._data[l]
+            if r > len(self._data):
+                return
+            else:        
+                r_val = self._data[r]
+            
+            if item > r_val or item > l_val:
+                self._percolate_down(q)
+            
+            if item < p:
+                self.percolate_up()
+            
         # for each node in the first half of the list
         # percolate down
-        pass
 if __name__ == '__main__':
     s = MinHeap()
     s.insert(2)

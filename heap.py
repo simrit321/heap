@@ -88,46 +88,60 @@ class MinHeap:
             p = self._data[i]
             if index == 0:
                 break
-        return 
+        return self
         
         
     def _percolate_down(self, i):
         ''' Restore heap property of subtree 
         rooted at index i.
         '''
-        index = i 
-        il = left(index)
-        ir = right(index)
-        if il > len(self._data)-1:
-            return
-        if ir > len(self._data)-1:
-            return
-        else:
-            r = self._data[i]
-            l = self._data[il]
-            ri = self._data[ir]
+        maxL = len(self._data)-1
+        index = i
+        node_val = self._data[i]
+        ind_left = left(index)
+        ind_right = right(index)
+
+        x = 0
+
+        while index != maxL:
+            if ind_left <= maxL:
+                x += 0.5
+            if ind_right <= maxL:
+                x += 1
+            else:
+                x +=0
+            if x == 1.5:
+                left_val = self._data[ind_left]
+                right_val = self._data[ind_right]
+                if left_val < node_val or right_val < node_val:
+                    if left_val < right_val:
+                        self.swap(n=node_val, s=left_val)
+                        index = self._data.index(node_val) 
+                    elif left_val > right_val:
+                        self.swap(n=node_val, s=right_val)
+                        index = self._data.index(node_val)
+
+            elif x == 0.5: 
+                left_val = self._data[ind_left]
+                if left_val < node_val:
+                    self.swap(n=node_val, s=left_val)
+                    index = self._data.index(node_val)
+            elif x == 1:
+                right_val = self._data[ind_right]
+                if right_val < node_val:
+                    self.swap(n=node_val, s=right_val)
+                    index = self._data.index(node_val)
             
-        while r > l or r > ri:
             
-            if l > ri:
-                smaller = ri
-            elif l < ri:
-                smaller = l
-              
-            x,y = self._data.index(r), self._data.index(smaller)
-            self._data[y], self._data[x] = self._data[x], self._data[y]
-            index = self._data.index(r)
-            il = left(index)
-            ir = right(index)
-            if il > len(self._data)-1:
-                return
-            if ir > len(self._data)-1:
-                return
-            else:                     
-                l = self._data[il]
-                r = self._data[ir]
-        return self             
-    
+
+
+    def swap(self, n, s):
+        a,b = self._data.index(n), self._data.index(s)
+        self._data[b], self._data[a] = self._data[a], self._data[b]
+        return self._data      
+
+
+            
         # while larger than at least one child
         # swap with smaller child and repeat    
         
@@ -135,27 +149,15 @@ class MinHeap:
     
     def _min_heapify(self):
         '''Turn unordered list into min-heap.'''
-        
-        for item in self._data:
-            q = self._data.index(item)
-            l = left(q)
-            r = right(q)
-            p = parent(q)
-            if l > len(self._data)-1:
-                return
-            else:           
-                l_val = self._data[l]
-            if r > len(self._data):
-                return
-            else:        
-                r_val = self._data[r]
-            
-            if item > r_val or item > l_val:
-                self._percolate_down(q)
-            
-            if item < p:
-                self.percolate_up()
-            
+        length = len(self._data)
+        mid = length//2
+        first_half = self._data[:mid]
+
+        for item in range(len(first_half[::-1])-1):
+            self._percolate_down(item)
+        return self._data
+    
+                   
         # for each node in the first half of the list
         # percolate down
 
@@ -173,3 +175,8 @@ if __name__ == '__main__':
     print(s)
     s.extract_min()
     print(s)
+    b = MinHeap(L=[33,2,1,3,4,6,7,11])
+    print(b)
+    b.extract_min()
+    print(b)
+

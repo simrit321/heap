@@ -59,17 +59,44 @@ class MinHeap:
             p = self._data[i]
             if index == 0:
                 break
-         
-
-
-    
+        return self
+ 
     
     def extract_min(self):
         '''Remove minimal value in self. Restore heap property.
         Raise EmptyHeapException if heap is empty.'''
         
-        pass
-    
+        if len(self._data) == 0:
+            raise Exception("No values in min heap")
+        else:
+            ind = len(self._data) - 1
+            a, b = self._data[0], self._data[ind]
+            self._data[b], self._data[a] = self._data[a], self._data[b]
+            m = self._data.pop(ind)
+            
+            index = 0
+            il = left(index)
+            ir = right(index)
+            r = self._data[0]
+            l = self._data[il]
+            ri = self._data[ir]
+            
+            while r > l or r > ri:
+                
+                if l > ri:
+                    smaller = ri
+                elif l < ri:
+                    smaller = l
+                  
+                x,y = self._data.index(r), self._data.index(smaller)
+                self._data[y], self._data[x] = self._data[x], self._data[y]
+                index = self._data.index(r)
+                il = left(index)
+                ir = right(index)
+                l = self._data[il]
+                r = self._data[ir]
+            return self             
+ 
     
     def _percolate_up(self):
         '''Restore heap property of self after 
@@ -98,4 +125,6 @@ if __name__ == '__main__':
     s = MinHeap(L=[0,1,5,7])
     s.insert(2)
     s.insert(4)
+    print(s)
+    s.extract_min()
     print(s)

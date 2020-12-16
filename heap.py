@@ -68,7 +68,7 @@ class MinHeap:
             self._data[b], self._data[a] = self._data[a], self._data[b]
             m=self._data.pop(len(self._data)-1)
             self._percolate_down(i=0)
-        self._percolate_up()
+        #self._percolate_up()
         self._percolate_down(i=0)
         return m
             
@@ -162,7 +162,7 @@ class MinHeap:
                     index = self._data.index(node_val)
                     self._percolate_down(i=index)
                     
-        elif len(self._data) == 3 and i==0:
+        elif (len(self._data) == 3 and i==0):
             index_left = 1
             index_right = 2
             left_val = self._data[index_left]
@@ -183,6 +183,9 @@ class MinHeap:
                     smaller = left_val
                     x,y = self._data.index(node_val), self._data.index(smaller)
                     self._data[y], self._data[x] = self._data[x], self._data[y]
+        elif (len(self._data)) == 3 and i!=0:
+            self._percolate_up()
+
         elif len(self._data) == 2 and i==0:
             if self._data[0] > self._data[1]:
                 smaller = self._data[1]
@@ -202,14 +205,14 @@ class MinHeap:
     def _min_heapify(self):
         '''Turn unordered list into min-heap.'''
         length = len(self._data)
-        mid = length//2
-        print(mid)
+        mid = length//2 
         
-        for index, item in enumerate(range(len(self._data))):
-            if index <= mid:
-                self._percolate_down(item)
-        return self._data
-    
+        l = list(range(mid))
+        print(l)
+        for item in l[::-1]:
+            self._percolate_down(item)
+            
+
                    
         # for each node in the first half of the list
         # percolate down
@@ -225,12 +228,15 @@ if __name__ == '__main__':
     s.insert(10)
     s.insert(1)
     s.insert(3)
+    print('s:')
     print(s)
     s.extract_min()
     print(s)
+    print('======')
     b = MinHeap(L=[33,2,3,55,4,0,1])
+    #print('MinHeap:')
     print(b)
-    b.extract_min()
     #b.extract_min()
-    print(b)
+    #b.extract_min()
+    #print(b)
 

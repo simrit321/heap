@@ -131,20 +131,21 @@ class MinHeap:
                         self._percolate_down(i=index)
                       
                     
-                elif left_val < node_val:
+                elif (left_val < node_val) and (right_val >= node_val):
                     smaller = left_val
                     x,y = self._data.index(node_val), self._data.index(smaller)
                     self._data[y], self._data[x] = self._data[x], self._data[y]
                     index = self._data.index(node_val)
                     self._percolate_down(i=index)
-                elif right_val < node_val:
+                    
+                elif (right_val < node_val) and (left_val >= node_val):
                     smaller = right_val
                     x,y = self._data.index(node_val), self._data.index(smaller)
                     self._data[y], self._data[x] = self._data[x], self._data[y]
                     index = self._data.index(node_val)
                     self._percolate_down(i=index)
                     
-            elif index_left <= maxL:
+            elif (index_left <= maxL) and (index_right > maxL):
                 left_val = self._data[index_left]
                 if left_val < node_val:
                     smaller = left_val
@@ -152,8 +153,8 @@ class MinHeap:
                     self._data[y], self._data[x] = self._data[x], self._data[y]
                     index = self._data.index(node_val)
                     self._percolate_down(i=index)
-                    
-            elif index_right <= maxL:
+                        
+            elif (index_right <= maxL) and (index_left > maxL):
                 right_val = self._data[index_right]
                 if right_val < node_val:
                     smaller = right_val
@@ -161,8 +162,8 @@ class MinHeap:
                     self._data[y], self._data[x] = self._data[x], self._data[y]
                     index = self._data.index(node_val)
                     self._percolate_down(i=index)
-                    
-        elif (len(self._data) == 3 and i==0):
+                            
+        '''elif (len(self._data) == 3) and (i==0):
             index_left = 1
             index_right = 2
             left_val = self._data[index_left]
@@ -192,7 +193,7 @@ class MinHeap:
                 x,y = self._data.index(node_val), self._data.index(smaller)
                 self._data[y], self._data[x] = self._data[x], self._data[y]
         if maxL == i:
-            self._percolate_up()
+            self._percolate_up()'''
         
         return self._data
 

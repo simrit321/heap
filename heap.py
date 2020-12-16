@@ -114,28 +114,37 @@ class MinHeap:
                 left_val = self._data[index_left]
                 right_val = self._data[index_right]
                 
-                big = True 
-                while node_val > left_val or node_val > right_val:
-                    
-                    if left_val > right_val:
-                        smaller = right_val
-                    elif left_val < right_val:
-                        smaller = left_val
-                      
-                    x,y = self._data.index(node_val), self._data.index(smaller)
-                    self._data[y], self._data[x] = self._data[x], self._data[y]
-                    index = self._data.index(node_val)
-                    index_left = left(index)
-                    index_right = right(index)
-                    
-                    if index_left < len(self._data)-1:
-                        left_val = self._data[index_left]
+                q = 0
+                if left_val < node_val:
+                    q += 0.5
+                if right_val < node_val:
+                    q += 1
+                #if q > 0:
+                    #big = True
+                 
+                    #while big:
+                    if q > 0:
                         
-                    if index_right < len(self._data)-1:
-                        right_val = self._data[index_right]
-               
-                    else:
-                        break
+                        if left_val > right_val:
+                            smaller = right_val
+                        elif left_val < right_val:
+                            smaller = left_val
+                          
+                        x,y = self._data.index(node_val), self._data.index(smaller)
+                        self._data[y], self._data[x] = self._data[x], self._data[y]
+                        index = self._data.index(node_val)
+                        self._percolate_down(i=index)
+                        #index_left = left(index)
+                        #index_right = right(index)
+                        
+                        #if index_left < len(self._data)-1:
+                            #left_val = self._data[index_left]
+                            
+                        #if index_right < len(self._data)-1:
+                            #right_val = self._data[index_right]
+                   
+                        #else:
+                            #break
         
 
             

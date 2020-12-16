@@ -69,6 +69,7 @@ class MinHeap:
             m=self._data.pop(len(self._data)-1)
             self._percolate_down(i=0)
         self._percolate_up()
+        self._percolate_down(i=0)
         return m
             
  
@@ -77,7 +78,7 @@ class MinHeap:
         '''Restore heap property of self after 
         adding new item'''
         index = len(self._data)
-        v = self._data[index-1]
+        v = self._data[index - 1]
         i = parent(index)
         p = self._data[i]
         while v < p:
@@ -95,61 +96,55 @@ class MinHeap:
         ''' Restore heap property of subtree 
         rooted at index i.
         '''
-
         index = i 
         index_left = left(index)
         index_right = right(index)
         node_val = self._data[i]
-        
-        
+        maxL = len(self._data)-1
         
         if len(self._data) >= 4:
-            x=0
-            if index_left < len(self._data)-1:
-                x += 0.5
-                # if x == 0.5, then only a left child exists
-            if index_right < len(self._data)-1:
-                x += 1
-                #if x == 1, then only a right child exists
-            #if x>0 then some child exists    
-            if x == 1.5:
+    
+            if (index_left <= maxL) and (index_right <= maxL):
+                
                 left_val = self._data[index_left]
                 right_val = self._data[index_right]
                 
-                q = 0
-                if left_val < node_val:
-                    q += 0.5
-                if right_val < node_val:
-                    q += 1
-                #if q > 0:
-                    #big = True
-                 
-                    #while big:
-                if q > 0:
-                        
+                if left_val < node_val and right_val < node_val :
+                
                     if left_val > right_val:
                         smaller = right_val
+                        x,y = self._data.index(node_val), self._data.index(smaller)
+                        self._data[y], self._data[x] = self._data[x], self._data[y]
+                        index = self._data.index(node_val)
+                        self._percolate_down(i=index)
                     elif left_val < right_val:
                         smaller = left_val
+                        x,y = self._data.index(node_val), self._data.index(smaller)
+                        self._data[y], self._data[x] = self._data[x], self._data[y]
+                        index = self._data.index(node_val)
+                        self._percolate_down(i=index)
                     elif left_val == right_val:
                         smaller = left_val
+                        x,y = self._data.index(node_val), self._data.index(smaller)
+                        self._data[y], self._data[x] = self._data[x], self._data[y]
+                        index = self._data.index(node_val)
+                        self._percolate_down(i=index)
                       
+                    
+                elif left_val < node_val:
+                    smaller = left_val
                     x,y = self._data.index(node_val), self._data.index(smaller)
                     self._data[y], self._data[x] = self._data[x], self._data[y]
                     index = self._data.index(node_val)
                     self._percolate_down(i=index)
-                    #index_left = left(index)
-                    #index_right = right(index)
+                elif right_val < node_val:
+                    smaller = right_val
+                    x,y = self._data.index(node_val), self._data.index(smaller)
+                    self._data[y], self._data[x] = self._data[x], self._data[y]
+                    index = self._data.index(node_val)
+                    self._percolate_down(i=index)
                     
-                    #if index_left < len(self._data)-1:
-                        #left_val = self._data[index_left]
-                        
-                    #if index_right < len(self._data)-1:
-                        #right_val = self._data[index_right]
-               
-                    #else:
-                        #break
-            elif x == 0.5:
+            elif index_left <= maxL:
                 left_val = self._data[index_left]
                 if left_val < node_val:
                     smaller = left_val
@@ -157,7 +152,8 @@ class MinHeap:
                     self._data[y], self._data[x] = self._data[x], self._data[y]
                     index = self._data.index(node_val)
                     self._percolate_down(i=index)
-            elif x == 1.0:
+                    
+            elif index_right <= maxL:
                 right_val = self._data[index_right]
                 if right_val < node_val:
                     smaller = right_val
@@ -172,12 +168,8 @@ class MinHeap:
             left_val = self._data[index_left]
             right_val = self._data[index_right]
             
-            x = 0
-            if node_val > left_val:
-                x += 0.5
-            if node_val > right_val:
-                x += 1
-            if x == 1.5:
+
+            if (node_val > left_val) and (node_val > right_val):
                 if left_val < right_val:
                     smaller = left_val
                     x,y = self._data.index(node_val), self._data.index(smaller)
@@ -196,13 +188,10 @@ class MinHeap:
                 smaller = self._data[1]
                 x,y = self._data.index(node_val), self._data.index(smaller)
                 self._data[y], self._data[x] = self._data[x], self._data[y]
-        if len(self._data)-1 == i:
+        if maxL == i:
             self._percolate_up()
-            
-                
-            
-                
-    
+        
+        return self._data
 
             
         # while larger than at least one child
@@ -214,10 +203,11 @@ class MinHeap:
         '''Turn unordered list into min-heap.'''
         length = len(self._data)
         mid = length//2
-        first_half = self._data[:mid]
-
-        for item in range(len(first_half[::-1])):
-            self._percolate_down(item)
+        print(mid)
+        
+        for index, item in enumerate(range(len(self._data))):
+            if index <= mid:
+                self._percolate_down(item)
         return self._data
     
                    
@@ -238,9 +228,9 @@ if __name__ == '__main__':
     print(s)
     s.extract_min()
     print(s)
-    b = MinHeap(L=[33,2,3])
+    b = MinHeap(L=[33,2,3,55,4,0,1])
     print(b)
     b.extract_min()
-    b.extract_min()
+    #b.extract_min()
     print(b)
 

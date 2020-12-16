@@ -101,15 +101,17 @@ class MinHeap:
         index_right = right(index)
         node_val = self._data[i]
         
-        x=0
+        
         
         if len(self._data) >= 4:
-            
+            x=0
             if index_left < len(self._data)-1:
                 x += 0.5
+                # if x == 0.5, then only a left child exists
             if index_right < len(self._data)-1:
                 x += 1
-                
+                #if x == 1, then only a right child exists
+            #if x>0 then some child exists    
             if x == 1.5:
                 left_val = self._data[index_left]
                 right_val = self._data[index_right]
@@ -123,29 +125,84 @@ class MinHeap:
                     #big = True
                  
                     #while big:
-                    if q > 0:
+                if q > 0:
                         
-                        if left_val > right_val:
-                            smaller = right_val
-                        elif left_val < right_val:
-                            smaller = left_val
-                          
-                        x,y = self._data.index(node_val), self._data.index(smaller)
-                        self._data[y], self._data[x] = self._data[x], self._data[y]
-                        index = self._data.index(node_val)
-                        self._percolate_down(i=index)
-                        #index_left = left(index)
-                        #index_right = right(index)
+                    if left_val > right_val:
+                        smaller = right_val
+                    elif left_val < right_val:
+                        smaller = left_val
+                    elif left_val == right_val:
+                        smaller = left_val
+                      
+                    x,y = self._data.index(node_val), self._data.index(smaller)
+                    self._data[y], self._data[x] = self._data[x], self._data[y]
+                    index = self._data.index(node_val)
+                    self._percolate_down(i=index)
+                    #index_left = left(index)
+                    #index_right = right(index)
+                    
+                    #if index_left < len(self._data)-1:
+                        #left_val = self._data[index_left]
                         
-                        #if index_left < len(self._data)-1:
-                            #left_val = self._data[index_left]
-                            
-                        #if index_right < len(self._data)-1:
-                            #right_val = self._data[index_right]
-                   
-                        #else:
-                            #break
-        
+                    #if index_right < len(self._data)-1:
+                        #right_val = self._data[index_right]
+               
+                    #else:
+                        #break
+            elif x == 0.5:
+                left_val = self._data[index_left]
+                if left_val < node_val:
+                    smaller = left_val
+                    x,y = self._data.index(node_val), self._data.index(smaller)
+                    self._data[y], self._data[x] = self._data[x], self._data[y]
+                    index = self._data.index(node_val)
+                    self._percolate_down(i=index)
+            elif x == 1.0:
+                right_val = self._data[index_right]
+                if right_val < node_val:
+                    smaller = right_val
+                    x,y = self._data.index(node_val), self._data.index(smaller)
+                    self._data[y], self._data[x] = self._data[x], self._data[y]
+                    index = self._data.index(node_val)
+                    self._percolate_down(i=index)
+                    
+        elif len(self._data) == 3 and i==0:
+            index_left = 1
+            index_right = 2
+            left_val = self._data[index_left]
+            right_val = self._data[index_right]
+            
+            x = 0
+            if node_val > left_val:
+                x += 0.5
+            if node_val > right_val:
+                x += 1
+            if x == 1.5:
+                if left_val < right_val:
+                    smaller = left_val
+                    x,y = self._data.index(node_val), self._data.index(smaller)
+                    self._data[y], self._data[x] = self._data[x], self._data[y]
+                elif left_val > right_val:
+                    smaller = right_val
+                    x,y = self._data.index(node_val), self._data.index(smaller)
+                    self._data[y], self._data[x] = self._data[x], self._data[y]
+                    
+                elif left_val == right_val:
+                    smaller = left_val
+                    x,y = self._data.index(node_val), self._data.index(smaller)
+                    self._data[y], self._data[x] = self._data[x], self._data[y]
+        elif len(self._data) == 2 and i==0:
+            if self._data[0] > self._data[1]:
+                smaller = self._data[1]
+                x,y = self._data.index(node_val), self._data.index(smaller)
+                self._data[y], self._data[x] = self._data[x], self._data[y]
+        if len(self._data)-1 == i:
+            self._percolate_up()
+            
+                
+            
+                
+    
 
             
         # while larger than at least one child
